@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search History</title>
+    <style>
+         body {
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: #007bff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 10px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+        tr:hover {
+            background-color: #ddd;
+        }
+        label {
+            margin-right: 10px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 5px 15px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <form action="{{ url_for('logout') }}" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    <h1>Search History</h1>
+    <div>
+        <input type="radio" id="search_by_both" name="search_option" value="both">
+        <label for="search_by_both">Check with Date and Roll Number</label>
+        <input type="radio" id="search_by_date" name="search_option" value="date">
+        <label for="search_by_date">Check with Date</label>
+        <input type="radio" id="search_by_roll_number" name="search_option" value="roll_number">
+        <label for="search_by_roll_number">Check with Roll Number</label>
+    </div>
+    <div id="date-input" style="display: none;">
+        <label for="taken_date">Select Taken Date:</label>
+        <input type="date" id="taken_date" name="taken_date">
+    </div>
+    <div id="roll-number-input" style="display: none;">
+        <label for="roll_number">Enter Roll Number:</label>
+        <input type="text" id="roll_number" name="roll_number">
+    </div>
+    <button type="button" onclick="prepareAndSubmit()">Search</button>
+
+    <h1>Student Data:</h1>
+    <table id="student-table">
+        <tr>
+            <th>Roll Number</th>
+            <th>Book ID</th>
+            <th>Book Name</th>
+            <th>Author Name</th>
+            <th>Taken Date</th>
+            <th>Submitted</th>
+        </tr>
+        {% for row in history %}
+        <tr>
+            <td>{{ row[1] }}</td>
+            <td>{{ row[2] }}</td>
+            <td>{{ row[3] }}</td>
+            <td>{{ row[4] }}</td>
+            <td>{{ row[5] }}</td>
+            <td>{{ row[6] }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Download button for CSV -->
+    <button type="button" onclick="prepareAndDownload()">Download CSV</button>
+
+    <form id="history-form" action="/history" method="post">
+        <input type="hidden" id="history-roll-number" name="roll_number">
+        <input type="hidden" id="history-taken-date" name="taken_date">
+    </form>
+
+    <script>
+        document.querySelectorAll('input[name="search_option"]').forEach(function(radio) {
+            radio.addEventListener('change', function() {
+                var selectedOption = document.querySelector('input[name="search_option"]:checked').value;
+                if (selectedOption === 'date') {
+                    document.getElementById('date-input').style.display = 'block';
+                    document.getElementById('roll-number-input').style.display = 'none';
+                } else if (selectedOption === 'roll_number') {
+                    document.getElementById('date-input').style.display = 'none';
+                    document.getElementById('roll-number-input').style.display = 'block';
+                } else if (selectedOption === 'both') {
+                    document.getElementById('date-input').style.display = 'block';
+                    document.getElementById('roll-number-input').style.display = 'block';
+                }
+            });
+        });
+
+        function prepareAndSubmit() {
+            var selectedOption = document.querySelector('input[name="search_option"]:checked').value;
+            var rollNumber = document.getElementById('roll_number').value;
+            var takenDate = document.getElementById('taken_date').value;
+
+            // Set form data in hidden input fields
+            document.getElementById('history-roll-number').value = rollNumber;
+            document.getElementById('history-taken-date').value = takenDate;
+
+            // Submit the form
+            document.getElementById('history-form').submit();
+        }
+
+        function prepareAndDownload() {
+            var studentTable = document.getElementById('student-table');
+            var csvContent = "data:text/csv;charset=utf-8,";
+            for (var i = 0, row; row = studentTable.rows[i]; i++) {
+                var rowData = [];
+                for (var j = 0, col; col = row.cells[j]; j++) {
+                    rowData.push(col.innerText);
+                }
+                csvContent += rowData.join(",") + "\n";
+            }
+
+            var encodedUri = encodeURI(csvContent);
+            var link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "search_results.csv");
+            document.body.appendChild(link); // Required for FF
+
+            link.click();
+        }
+    </script>
+</body>
+</html>

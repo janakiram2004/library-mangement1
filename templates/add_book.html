@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Student Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"], input[type="email"] {
+            width: calc(100% - 16px);
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+        select,
+        input[type="date"] {
+            width: 65%; /* Adjust the width for input fields to fit next to labels */
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            display: inline-block; /* Make input fields inline-block to display them side by side */
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Add Book Details</h1>
+        <form method="POST" action="/add_book">
+            <label for="Bookid">Book Id:</label>
+            <input type="text" name="Bookid" required><br>
+            
+            <label for="Book_name">Book Name:</label>
+            <input type="text" name="Book_name" required><br>
+        
+            <label for="authorname">Author Name:</label>
+            <input type="text" name="authorname" required><br>
+            
+            <label for="publisher">Publisher:</label>
+            <input type="text" name="publisher" required><br>
+           
+            <label for="isbn">ISBN NO:</label>
+            <input type="text" name="isbn" required><br>
+            
+            <label for="rack">RACK:</label>
+            <input type="text" name="rack" required><br>
+            
+            <label for="department">Department:</label>
+            <input type="text" name="department" required><br>
+            
+            <label for="type">Type:</label>
+            <select name="Type" required>
+                <option value="" disabled selected>Select Year</option>
+                <option value="General Book">General Book</option>
+                <option value="Text Book">Text Book</option>
+                <option value="Material">Material</option>
+                <option value="Reference">Reference</option>
+            </select><br>
+            
+            <label for="row">Row Number:</label>
+            <input type="text" name="row" required><br>
+            
+            <label for="location">Book Location:</label>
+            <input type="text" name="location" required><br>
+        
+            <input type="submit" value="Add Book">
+        </form>
+    </div>
+</body>
+</html>

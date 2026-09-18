@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Book Details</title>
+</head>
+<body>
+    <h2>Book Details:</h2>
+    <form method="post" action="/get_book_details">
+        <input type="text" name="book_id" placeholder="Roll-Number" required>
+        <input type="submit" value="Search">
+    </form>
+    {% if book_data %}
+        <p><strong>Book ID:</strong> {{ book_data.bookid }}</p>
+        <p><strong>Book Name:</strong> {{ book_data.bookname }}</p>
+        <p><strong>Author Name:</strong> {{ book_data.authorname }}</p>
+        <form method="POST" action="{{ url_for('remove_book', book_id=book_data.bookid) }}">
+            <input type="submit" value="Remove Book">
+        </form>
+    {% else %}
+        <p>No book found for the provided Book ID.</p>
+    {% endif %}
+</body>
+</html>

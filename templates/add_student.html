@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Student Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px; /* Increased width to accommodate side-by-side layout */
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            margin-top: 50px;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: inline-block;
+            width: 30%; /* Set the width for labels to create consistent spacing */
+            margin-bottom: 8px;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"],
+        select,
+        input[type="date"] {
+            width: 65%; /* Adjust the width for input fields to fit next to labels */
+            padding: 8px;
+            margin-bottom: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 16px;
+            display: inline-block; /* Make input fields inline-block to display them side by side */
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+       
+        <h1>Add Student Details</h1>
+        <form method="post" action="/add_student" enctype="multipart/form-data">
+            <label for="Roll_Number">Roll Number:</label>
+            <input type="text" name="Roll_Number" required><br>
+            
+            <label for="Name">Name:</label>
+            <input type="text" name="Name" required><br>
+            <label for="Department">Department:</label>
+            <select name="Department" required>
+                <option value="" disabled selected>Select Department</option>
+                <option value=" Computer Science & Engineering"> CSE</option>
+                <option value="Computer Science & Engineering(Artificial Intelligence)">CSE(Artificial Intelligence)</option>
+                <option value="Computer Science & Engineering(Data Science)">CSE(Data Science)</option>
+                <option value="Computer Science & Engineering(Cyber Security)">CSE(Cyber Security)</option>
+                <option value="Computer Science & Technology">CST</option>
+                <option value="ECE">ECE</option>
+                <option value="EEE">EEE</option>
+                <option value="MEC">MEC</option>
+            </select><br>
+            <label for="Year">Select Year:</label>
+            <select name="Year" required>
+                <option value="" disabled selected>Select Year</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+            </select><br>
+            <label for="Outlook">Outlook Email:</label>
+            <input type="email" name="Outlook" required><br>
+            <label for="PhoneNumber">Phone Number:</label>
+            <input type="text" name="PhoneNumber" ><br>
+
+            <div class="form-group">
+                <label for="Duration">Duration (YYYY-YYYY):</label>
+                <input type="text" name="Duration" pattern="\d{4}-\d{4}" placeholder="e.g., 2023-2027" >
+            </div>
+
+            <label for="Programming">Programming:</label>
+            <input type="text" name="Programming" ><br>
+
+            <label for="DateOfBirth">Date of Birth:</label>
+            <input type="date" name="DateOfBirth"><br>
+
+            <label for="Gender">Gender:</label>
+            <input type="text" name="Gender"><br>
+
+            <label for="InstituteName">Institute Name:</label>
+            <input type="text" name="InstituteName" ><br>
+            <label for="Photo">Upload Photo:</label>
+            <input type="file" name="Photo" accept=".jpg, .jpeg, .png, .gif" required><br>
+
+            <input type="submit" value="Add Student">
+        </form>
+    </div>
+</body>
+</html>

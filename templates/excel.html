@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student and Faculty Portal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            box-shadow: 0 4px 8px 0 rgba(252, 252, 252, 0.2);
+            border-radius: 10px;
+            margin-top: 20px;
+            background-size: cover;
+            background-image: url('{{ url_for('static', filename='lib3.jpg') }}'); /* Initial background image */
+            background-position: 0 0; /* Initial background position */
+            transition: opacity 0.8s ease-out, background-position 0.8s ease-out;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
+
+        .user-info {
+            margin-bottom: 20px;
+        }
+
+        .user-info img {
+            border-radius: 50%;
+            border: 5px solid #fff;
+            box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+        }
+
+        .symbol-container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .symbol-container .symbol {
+            font-size: 60px;
+            cursor: pointer;
+            margin: 0 20px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin-top: 20px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+        .user-photo {
+            max-width: 100px; 
+            max-height: 100px; 
+        }
+        #video-background {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            z-index: -1; 
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        {% if session.get('logged_in') and session['role'] == 'user' %}
+        <div class="user-info">
+
+        
+            <h2>Welcome, {{ session.get('user_name', 'User') }}!</h2>
+        </div>
+        {% endif %}
+
+        <div class="symbol-container">
+            <div class="symbol" onclick="openFacultyPage()">👩‍🎓</div>
+            <div>History</div>
+            <div class="symbol" onclick="openBookPage()">📚</div>
+            <div>Find Book Details</div>
+        </div>
+
+        <form action="{{ url_for('logout') }}" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+
+    <script>
+        function openFacultyPage() {
+            window.location.href = "{{ url_for('history_details') }}";
+        }
+
+        function openBookPage() {
+            window.location.href = "{{ url_for('view_book') }}";
+        }
+    </script>
+</body>
+
+</html>

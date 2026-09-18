@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Book Details</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        label {
+            margin-bottom: 10px;
+        }
+
+        input[type="text"] {
+            width: 300px;
+            padding: 10px;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .book-details {
+            margin-top: 40px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+        }
+
+        .book-details h2 {
+            color: #4CAF50;
+            margin-bottom: 10px;
+        }
+
+        .book-details p {
+            margin-bottom: 10px;
+        }
+
+        .book-details strong {
+            color: #4CAF50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+        select {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            margin-bottom: 20px;
+        }
+        .logout-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            text-decoration: none;
+            cursor: pointer;
+            margin: 10px;
+            transition: background-color 0.3s ease;
+        }
+    </style>
+<body>
+    <div style="position: absolute; top: 10px; right: 10px;">
+        <form action="{{ url_for('logout') }}" method="GET">
+            <button type="submit">Logout</button>
+        </form>
+    </div>
+    <h1>Enter Book Details to View</h1>
+    <form action="/view_book" method="post">
+        <div>
+            <input type="radio" id="search_bookid" name="search_option" value="bookid" required>
+            <label for="search_bookid">Check with Book ID</label>
+            <input type="radio" id="search_department" name="search_option" value="department">
+            <label for="search_department">Check with Department</label>
+            <input type="radio" id="search_department_type" name="search_option" value="department_type">
+            <label for="search_department_type">Check with Department and Book Type</label><br>
+        </div>
+        <div id="book_id_input">
+            <label for="book_id">Book ID:</label>
+            <input type="text" id="book_id" name="book_id">
+        </div><br>
+
+        <div id="department_input" style="display: none;">
+            <label for="department">Select Department:</label>
+            <select id="department" name="department">
+                <option value="CSD">CSD</option>
+                <option value="CSE">CSE</option>
+                <option value="CAI">CAI</option>
+                <option value="CST">CST</option>
+                <option value="ECE">ECE</option>
+                <option value="MEC">MEC</option>
+                <option value="EEE">EEE</option>
+            </select>
+        </div><br>
+        <div id="type_input" style="display: none;">
+            <label for="type">Book Type:</label>
+            <select id="text" name="type">
+                <option value="General">General</option>
+                <option value="Text Book">Text Book</option>
+                <option value="Reference">Reference</option>
+                <option value="Material">Material</option>
+            </select>
+        </div>
+        <button type="submit">View Details</button>
+    </form>
+        
+        {% if book_data %}
+        <div class="book-details">
+            <h2 style="color: #3e2dac">Book Details</h2>
+            <table>
+                <tr>
+                    <th>Book Name</th>
+                    <th>Author Name</th>
+                    <th>ISBN</th>
+                    <th>Book Type</th>
+                    <th>Department</th>
+                    <th>Rack Number</th>
+                    <th>Row Number</th>
+                    <th>Book Location</th>
+                    <th>Book Status</th>
+                </tr>
+                {% for book in book_data %}
+                <tr>
+                    <td>{{ book.bookname }}</td>
+                    <td>{{ book.authorname }}</td>
+                    <td>{{ book.isbn }}</td>
+                    <td>{{ book.type }}</td>
+                    <td>{{ book.department }}</td>
+                    <td>{{ book.rack }}</td>
+                    <td>{{ book.row }}</td>
+                    <td>{{ book.location }}</td>
+                    <td>{{ book.status }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        {% endif %}
+    
+        <script>
+            document.querySelectorAll('input[name="search_option"]').forEach(function (element) {
+                element.addEventListener('change', function () {
+                    var bookIdInput = document.getElementById('book_id_input');
+                    var departmentInput = document.getElementById('department_input');
+                    var typeInput = document.getElementById('type_input');
+                    var nameInput = document.getElementById('name_input');
+        
+                    if (this.value === 'bookid') {
+                        bookIdInput.style.display = 'block';
+                        departmentInput.style.display = 'none';
+                        typeInput.style.display = 'none';
+                        nameInput.style.display = 'none';  
+                    } else if (this.value === 'department') {
+                        bookIdInput.style.display = 'none';
+                        departmentInput.style.display = 'block';
+                        typeInput.style.display = 'none';
+                        nameInput.style.display = 'none';  
+                    } else if (this.value === 'department_type') {
+                        bookIdInput.style.display = 'none';
+                        departmentInput.style.display = 'block';
+                        typeInput.style.display = 'block';
+                        nameInput.style.display = 'none'; 
+                    }
+                });
+            });
+        </script>
+</body>
+    
+</html>
